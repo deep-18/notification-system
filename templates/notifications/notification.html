@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <title>NOTIFICATION</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+          body{
+            margin: 0;
+            {% comment %} height: 100vh;
+            background: linear-gradient(5deg, #ece3a4, #ccab00); {% endcomment %}
+          }
+          .hero{
+            margin: 0;  
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(5deg, #ece3a4, #ccab00);
+            width: 100vw;
+            font-family: 'Montserrat', sans-serif;
+          }
+          .wrapper{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            height: 50%;
+            width: 50%;
+            margin: 10px;
+            display: grid;
+            grid-template-rows: max-content;
+            justify-items: center;
+          }
+          .wrapper h2{
+            font-size: 2rem;
+          }
+          .wrapper form{
+            display: flex;
+            flex-direction: column;
+          }
+          .wrapper form input, .wrapper form textarea{
+            border: none;
+            background: none;
+            border-bottom: 1px solid black;
+            width: 100%;
+            margin: 0.2rem;
+            font-size: 1.5rem ;
+            outline: none;
+          }
+          .wrapper form button, .wrapper form select{
+            padding: 5px;
+            background: none;
+            border: 1px solid black;
+            width: 100%;
+            margin: 0.2rem;
+            font-size: 1.5rem ;
+            outline: none;
+          }
+          .inner{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          }
+        </style>
+    </head>
+    <body>
+        <div class="hero">
+          <div class="wrapper">
+            <h1>Notifications</h1>
+            {% for i in notifications%}
+            <div class="inner">
+                <h3>{{i.message}}</h3>
+                {% if i.is_read != True %}
+                <form method="post" action="/mark_as_read/">
+                        {% csrf_token %}
+                        <input type="text" value="{{i.id}}" name="id" hidden>
+                        <button type="submit" class="mark_as_read" id="{{i.id}}">Mark as read</button>
+                </form>
+                {%endif%}
+                </div>   
+            {%endfor%}
+      </div>
+      </div>
+    </body>
+    {% comment %} <body>
+        <h1>Notifications</h1>
+        <div class="hero">
+            {% for i in notifications%}
+            <div class="inner">
+                {{i.message}}
+                {{i.is_read}}
+                <form method="post" action="/mark_as_read/">
+                        {% csrf_token %}
+                        <input type="text" value="{{i.id}}" name="id" hidden>
+                        <button type="submit" class="mark_as_read" id="{{i.id}}">Mark as read</button>
+                    </form>
+                </div>   
+            {%endfor%}
+        </div>
+        <a href="/logout">Logout</a>
+    </body> {% endcomment %}
+    <script>
+    const socket = new WebSocket('ws://127.0.0.1:8000/ws/notifications/');
+    console.log(socket)
+    socket.onopen = function (event) {
+        console.log('WebSocket connection opened.');
+    };
+
+    socket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        if (data.type === 'notification') {
+            // Handle incoming notifications, e.g., display them on the page
+            const notificationContainer = document.getElementById('notification-container');
+            const notificationMessage = document.createElement('div');
+            notificationMessage.textContent = data.message;
+            notificationContainer.appendChild(notificationMessage);
+        }
+    };
+
+    socket.onclose = function (event) {
+        console.log('WebSocket connection closed.');
+    };
+    </script>
+
+</html>

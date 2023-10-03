@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Notification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+      body{
+        margin: 0;
+        {% comment %} height: 100vh;
+        background: linear-gradient(5deg, #ece3a4, #ccab00); {% endcomment %}
+      }
+      .hero{
+        margin: 0;  
+        position: relative;
+        height: 100vh;
+        background: linear-gradient(5deg, #ece3a4, #ccab00);
+        width: 100vw;
+        font-family: 'Montserrat', sans-serif;
+      }
+      .wrapper{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        height: 50%;
+        width: 50%;
+        margin: 10px;
+        display: grid;
+        grid-template-rows: max-content;
+        justify-items: center;
+      }
+      .wrapper h2{
+        font-size: 2rem;
+      }
+      .wrapper form{
+        display: flex;
+        flex-direction: column;
+      }
+      .wrapper form input, .wrapper form textarea{
+        border: none;
+        background: none;
+        border-bottom: 1px solid black;
+        width: 100%;
+        margin: 0.2rem;
+        font-size: 1.5rem ;
+        outline: none;
+      }
+      .wrapper form button, .wrapper form select{
+        padding: 5px;
+        background: none;
+        border: 1px solid black;
+        width: 100%;
+        margin: 0.2rem;
+        font-size: 1.5rem ;
+        outline: none;
+      }
+    </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="wrapper">
+{% block content %}
+<h1>Create Notification</h1>
+  <form id="create-notification-form">
+    {% csrf_token %}
+    <select name="user" id="user">
+        <option disabled selected>Select a ID</option>
+        {% for u in users %}
+            <option value="{{u}}">{{u}}</option>
+        {%endfor%}
+    </select>
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" required></textarea><br>
+    <button type="submit">Create Notification</button>
+</form>
+{% endblock %}
+</div>
+</div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript"> const CSRFToken = "{{ csrf_token }}"; </script>
+    <script>
+        // JavaScript for handling form submission and WebSocket connection
+        const form = document.getElementById('create-notification-form');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const message = document.getElementById('message').value;
+            const user = document.getElementById('user').selectedOptions[0].innerText;
+            console.log(message)
+            // Send the message to the server via AJAX or fetch
+
+            $.ajax({
+                type: 'POST',
+                url: "/create_notification/",
+                data: {'Content-Type': 'application/json', csrfmiddlewaretoken: CSRFToken, 'message': message,'user':user},
+                success: function (response) {
+                    // if not valid user, alert the user
+                    console.log(response)
+                    if (response.success) {
+                        alert('Notification created successfully.');
+                        document.getElementById('message').value = '';
+                    } else {
+                        alert('Error: sdd' + data.message);
+                    }
+                },
+                error: function (response) {
+                    console.log(response)
+                }
+            })
+        });
+    </script>
+</body>
+
+</html>
