@@ -20,8 +20,8 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Automatically log in the user after registration
-            return redirect('/')  # Redirect to the home page or any desired page
+            login(request, user)  
+            return redirect('/')
     else:
         form = RegistrationForm()
     return render(request, 'notifications/register.html', {'form': form})
@@ -31,7 +31,7 @@ def user_login(request):
         form = LoginForm(request, request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect('/')  # Redirect to the home page or any desired page after login
+            return redirect('/') 
     else:
         form = LoginForm()
     return render(request, 'notifications/login.html', {'form': form})
@@ -39,10 +39,6 @@ def user_login(request):
 @login_required
 def notification_list(request):
     notifications = Notification.objects.filter(user=request.user)
-    # for i in notifications:
-    #     print(i.is)
-        # i.is_read = True
-    # notifications.save()
     return render(request, 'notifications/notification.html', {'notifications': notifications})
 
 def mark_as_read(request):
@@ -51,23 +47,6 @@ def mark_as_read(request):
     print(id)
     Notification.objects.filter(id=id).update(is_read=True)
     return redirect('/')
-# def mark_as_read(request, notification_id):
-#     notification = Notification.objects.get(id=notification_id)
-#     notification.is_read = True
-#     notification.save()
-#     return redirect('notification_list')
-
-# def send_notification(request):
-#     if request.method == 'POST':
-#         form = NotificationForm(request.POST)
-#         if form.is_valid():
-#             notification = form.save(commit=False)
-#             notification.user = request.user
-#             notification.save()
-#             return redirect('notification_list')
-#     else:
-#         form = NotificationForm()
-#     return render(request, 'notifications/send_notification.html', {'form': form})
 @login_required
 def create_notification(request):
     if request.method == 'POST':
@@ -81,15 +60,12 @@ def create_notification(request):
             # Create the notification
             notification = Notification.objects.create(user=user, message=message)
 
-            # Trigger real-time notification broadcast to connected clients
            
             # channel_layer = get_channel_layer()
 
-            # Group name based on the user's ID
            
             # group_name = f"user_{user.id}"
 
-            # Send the notification data to the group
            
             # async_to_sync(channel_layer.group_add)(group_name, group_name)
             # async_to_sync(channel_layer.group_send)(
