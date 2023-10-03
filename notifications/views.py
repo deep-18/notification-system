@@ -47,7 +47,7 @@ def mark_as_read(request):
     print(id)
     Notification.objects.filter(id=id).update(is_read=True)
     return redirect('/')
-@login_required
+# @login_required
 def create_notification(request):
     if request.method == 'POST':
         message = request.POST.get('message')

@@ -58,12 +58,29 @@
             align-items: center;
             gap: 10px;
           }
+          .nav{
+            display: flex;
+            justify-content: space-evenly;
+            padding: 10px;
+            align-items: center;
+          }
+          .nav a{
+            text-decoration: none;
+            color: black;
+            outline: none;
+          }
         </style>
     </head>
     <body>
         <div class="hero">
+          <nav class="nav">
+                <h1>Notifications</h1>
+                <div></div>
+                <a href="/create_notification">Create Notification</a>
+                <a href="/logout/">Logout</a>
+        </nav>
           <div class="wrapper">
-            <h1>Notifications</h1>
+            {% comment %} <h1>Notifications</h1> {% endcomment %}
             {% for i in notifications%}
             <div class="inner">
                 <h3>{{i.message}}</h3>

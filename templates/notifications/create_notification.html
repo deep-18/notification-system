@@ -56,13 +56,30 @@
         font-size: 1.5rem ;
         outline: none;
       }
+      .nav{
+        display: flex;
+        justify-content: space-evenly;
+        padding: 10px;
+        align-items: center;
+      }
+      .nav a{
+        text-decoration: none;
+        color: black;
+        outline: none;
+      }
     </style>
 </head>
 <body>
   <div class="hero">
+    <nav class="nav">
+      <h1>Create Notifications</h1>
+      <div></div>
+      <a href="/">Notifications</a>
+      <a href="/login/">Login</a>
+</nav>
     <div class="wrapper">
 {% block content %}
-<h1>Create Notification</h1>
+{% comment %} <h1>Create Notification</h1> {% endcomment %}
   <form id="create-notification-form">
     {% csrf_token %}
     <select name="user" id="user">
