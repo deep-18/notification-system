@@ -15,10 +15,8 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         message_type = data['type']
 
         if message_type == 'notification':
-            # Handle incoming notification data here
             notification_message = data['message']
 
-            # Send a response back to the client (optional)
             await self.send(json.dumps({
                 'type': 'response',
                 'message': 'Notification received.',

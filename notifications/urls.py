@@ -13,7 +13,3 @@ urlpatterns = [
      path('mark_as_read/', views.mark_as_read, name='mark_as_read'),
      path('logout/', LogoutView.as_view(), name='logout')
 ]
-
-# if settings.DEBUG:
-#     urlpatterns += static(settings.MEDIA_URL,
-#                           document_root=settings.MEDIA_ROOT)
