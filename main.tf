@@ -64,3 +64,7 @@ resource "null_resource" "docker_deploy" {
     }
   }
 }
+
+output "public_ip" {
+  value = aws_instance.example.public_ip
+}
