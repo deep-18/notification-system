@@ -21,5 +21,13 @@ COPY . /app/
 EXPOSE 8000
 
 # Start the application with Gunicorn
-RUN terraform --version 
+RUN apt update \
+    && apt install -y wget \
+    && apt install -y unzip \
+    && apt install -y vim \
+    && apt install -y openssh-client
+RUN wget https://releases.hashicorp.com/terraform/0.15.4/terraform_0.15.4_linux_amd64.zip 
+RUN unzip terraform_0.15.4_linux_amd64.zip 
+RUN mv terraform /usr/local/bin/
+RUN terraform version
 CMD ["gunicorn", "--workers=2", "--bind", "0.0.0.0:8000", "notification_system.wsgi:application"]
