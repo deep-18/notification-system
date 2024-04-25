@@ -61,7 +61,7 @@ resource "null_resource" "docker_deploy" {
     connection {
       type     = "ssh"
       user     = "ec2-user"
-      private_key = aws_key_pair.example.azureAgent 
+      private_key = file("./azureAgent.pem")
       host     = aws_instance.example.public_ip
     }
   }
