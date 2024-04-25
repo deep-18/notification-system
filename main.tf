@@ -12,10 +12,15 @@ provider "aws" {
   region = "us-east-1"
 }
 
+resource "aws_key_pair" "example" {
+  key_name   = "azureAgent"
+  public_key = ${{ secrets.AZUREAGENT }}
+}
+
 resource "aws_instance" "example" {
   ami           = "ami-04e5276ebb8451442"
   instance_type = "t2.micro"
-  key_name      = aws_key_pair.example.azureAgent
+  key_name      = aws_key_pair.example.key_name
 
   tags = {
     Name = "example-instance"
