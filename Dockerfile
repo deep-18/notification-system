@@ -21,4 +21,5 @@ COPY . /app/
 EXPOSE 8000
 
 # Start the application with Gunicorn
+RUN terraform --version 
 CMD ["gunicorn", "--workers=2", "--bind", "0.0.0.0:8000", "notification_system.wsgi:application"]
