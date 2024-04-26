@@ -24,12 +24,12 @@ resource "aws_instance" "example" {
   }
 
   user_data = <<EOF
-      "sudo yum update -y",
-      "sudo yum install docker -y",
-      "sudo service docker start",
-      "sudo docker login -u deepraval -p Deep12345",  
-      "sudo docker pull deepraval/notification-system:90",  
-      "sudo docker run -d -p 80:80 notification-system"
+    sudo yum update -y
+    sudo yum install docker -y
+    sudo service docker start
+    sudo docker login -u deepraval -p Deep12345
+    sudo docker pull deepraval/notification-system:90
+    sudo docker run -d -p 80:80 notification-system
   EOF
 }
 
