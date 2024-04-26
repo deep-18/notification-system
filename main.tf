@@ -43,27 +43,25 @@ resource "aws_security_group" "docker" {
   }
 }
 
-resource "aws_eip" "example" {
-  instance = aws_instance.example.id
-}
 
 resource "null_resource" "docker_deploy" {
   depends_on = [aws_instance.example]
 
+  connection {
+    type     = "ssh"
+    user     = "ec2-user"
+    private_key = "${file("./azureAgent.pem")}"
+    host     = aws_instance.example.public_ip
+  }
   provisioner "remote-exec" {
-    inline = [
+    inline = [ 
       "sudo yum update -y",
       "sudo yum install docker -y",
       "sudo service docker start",
-      "sudo docker run -d -p 80:80 notification-app-image" 
+      "sudo docker login -u deepraval -p Deep12345",  
+      "sudo docker pull notification-system",  
+      "sudo docker run -d -p 80:80 notification-system"
     ]
-
-    connection {
-      type     = "ssh"
-      user     = "ec2-user"
-      private_key = file("./azureAgent.pem")
-      host     = aws_instance.example.public_ip
-    }
   }
 }
 
