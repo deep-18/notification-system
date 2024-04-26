@@ -31,7 +31,6 @@ resource "aws_instance" "example" {
       "sudo docker pull deepraval/notification-system:90",  
       "sudo docker run -d -p 80:80 notification-system"
   EOF
-  }
 }
 
 resource "aws_security_group" "docker" {
