@@ -22,23 +22,15 @@ resource "aws_instance" "example" {
   tags = {
     Name = "example-instance"
   }
-  
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = "${file("./azureAgent.pem")}"
-    host        = self.public_ip
-  }
 
-  provisioner "remote-exec" {
-    inline = [ 
+  user_data = <<EOF
       "sudo yum update -y",
       "sudo yum install docker -y",
       "sudo service docker start",
       "sudo docker login -u deepraval -p Deep12345",  
-      "sudo docker pull notification-system",  
+      "sudo docker pull deepraval/notification-system:90",  
       "sudo docker run -d -p 80:80 notification-system"
-    ]
+  EOF
   }
 }
 
